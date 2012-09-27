@@ -54,7 +54,7 @@ var
 
 const
 
-  CUR_VERSION = '104e';
+  CUR_VERSION = '104f';
 
 procedure log(s: string);
 
