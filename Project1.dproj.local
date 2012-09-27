@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2012.06.01 16:25:38.312.pas,D:\Documents and Settings\user\Мои документы\RAD Studio\Projects\Unit1.pas=D:\D3Dev\ItemDumper\Unit1.pas</Transaction>
+    <Transaction>2012.06.01 16:25:38.312.dfm,D:\Documents and Settings\user\Мои документы\RAD Studio\Projects\Unit1.dfm=D:\D3Dev\ItemDumper\Unit1.dfm</Transaction>
+    <Transaction>2012.06.01 16:29:25.968.dproj,D:\Documents and Settings\user\Мои документы\RAD Studio\Projects\Project1.dproj=D:\D3Dev\ItemDumper\Project1.dproj</Transaction>
+    <Transaction>2012.09.24 23:44:17.468.pas,D:\Dev\D3Dev\ItemDumper\Unit2.pas=D:\Dev\D3Dev\ItemDumper\translator.pas</Transaction>
+    <Transaction>2012.09.27 11:00:07.817.pas,D:\Dev\d3Idump\Diablo3ItemDumper\Unit2.pas=D:\Dev\d3Idump\Diablo3ItemDumper\consts.pas</Transaction>
+    <Transaction>2012.09.27 11:03:43.603.pas,D:\Dev\d3Idump\Diablo3ItemDumper\Unit2.pas=D:\Dev\d3Idump\Diablo3ItemDumper\d3ui.pas</Transaction>
+  </Transactions>
+</BorlandProject>
