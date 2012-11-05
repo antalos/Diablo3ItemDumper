@@ -16,6 +16,8 @@ function get_info_from_itempopup() : string;
 function  get_full_charinfo() : string;
 function  get_short_charinfo() : string;
 
+function get_ah_dump() : string;
+
 implementation
 uses unit1;
 
@@ -49,6 +51,8 @@ procedure dump_ui();
   f : textfile;
   a : int64;
 
+  ij : integer;
+  my_offset : dword;
 begin
 //Root.TopLayer.item 2.stack.top_wrapper.stack.name [8B53294A, 74E93828]
 //Root.TopLayer.item 2.stack.top_wrapper.stack.name [8424326324760553802]
@@ -64,43 +68,52 @@ begin
 
   exit;    }
 
+
   update_mr();
+    my_offset := $00;
 
-  ObjectManagerAddress := offObjectMngr;
 
-  RActorsAddress := mr.readUInt(ObjectManagerAddress);
-  RActorsAddress := mr.readUInt(RActorsAddress + offObjectMngr_uilist);
-  RActorsAddress := mr.readUInt(RActorsAddress);
+      ObjectManagerAddress := offObjectMngr;
 
-  RActorsAddress := mr.readUInt(RActorsAddress + 8);
-  log('RActorsAddress = ' + shex(RActorsAddress));
+      RActorsAddress := mr.readUInt(ObjectManagerAddress);
+      log('RActorsAddress1 = ' + shex(RActorsAddress));
+      RActorsAddress := mr.readUInt(RActorsAddress + offObjectMngr_uilist);
+      log('RActorsAddress2 = ' + shex(RActorsAddress));
+      RActorsAddress := mr.readUInt(RActorsAddress);
+      log('RActorsAddress3 = ' + shex(RActorsAddress));
 
-  nitems := mr.readUInt(ObjectManagerAddress);
-  nitems := mr.readUInt(nitems + offObjectMngr_uilist);
-  nitems := mr.readUInt(nitems);
-  nitems := mr.readUInt(nitems + $40);
-  log('nitems = ' + sint(nitems));
+      RActorsAddress := mr.readUInt(RActorsAddress + 8);
+//      log('RActorsAddress4 = ' + shex(RActorsAddress));
 
-  assignfile(f, 'ui_dump.txt');
-  rewrite(f);
+      nitems := mr.readUInt(ObjectManagerAddress);
+      nitems := mr.readUInt(nitems + offObjectMngr_uilist);
+      nitems := mr.readUInt(nitems);
+      nitems := mr.readUInt(nitems + $40);
+      log('nitems='+sint(nitems));
 
-  j := 0;
-  for i := 0 to nitems  do begin
-     addr := mr.readUInt(RActorsAddress + i*4);
-     if addr = 0  then continue;
 
-     s := get_ui_dumpstr(addr); if s <> '' then writeln(f,  s);
+      assignfile(f, 'ui_dump.txt');
+      rewrite(f);
 
-      addr := read(addr);
-      while (addr > 0)  and (addr < $FFFFFFFF) do begin
-        s := get_ui_dumpstr(addr); if s <> '' then writeln(f,  s);
-        inc(j);
-        addr := read(addr);
+      j := 0;
+      for i := 0 to nitems  do begin
+         addr := mr.readUInt(RActorsAddress + i*4);
+         if addr = 0  then continue;
+
+         s := get_ui_dumpstr(addr); if s <> '' then writeln(f,  s);
+
+          addr := read(addr);
+          while (addr > 0)  and (addr < $FFFFFFFF) do begin
+            s := get_ui_dumpstr(addr); if s <> '' then writeln(f,  s);
+            inc(j);
+            addr := read(addr);
+          end;
+          inc(j);
       end;
-      inc(j);
-  end;
-  log('done, got: '+inttostr(j));
-  closefile(f);
+      log('done, got: '+inttostr(j));
+      closefile(f);
+
+
 end;
 
 function get_ui_baseaddr( uitype : int64) : dword;
@@ -118,7 +131,7 @@ begin
 //  reada12 := hashrec[ uitype ].hash2;
 
   //log('addr = ' + shex(a1) +' => '+ shex( reada1 ) +'   +4 => '+shex( reada12 ) );
-  ui_base := read(read(read( offObjectMngr ) + offObjectMngr_uilist));
+  ui_base := read( read( read( offObjectMngr ) + offObjectMngr_uilist) );
   //log('uibase = ' + shex(ui_base));
 
   xored := reada1 xor reada12;
@@ -171,12 +184,15 @@ end;
 
 function get_text_value( uitype : int64) : string;
   var addr : dword;
+    i : integer;
 begin
   //found addr of value with cheatengine, look for offset from base manually
   result := '';
   addr := get_ui_baseaddr( uitype );
   if addr = 0 then exit;
 //  log('reading from ' + shex( read(addr + off_text_value)) );
+//for I := 0 to $001000 do begin  log( shex(i)+':'+mr.readLongString( read(addr + i) ));end;
+
   result := mr.readLongString( read(addr + off_text_value) );
 end;
 
@@ -416,5 +432,49 @@ begin
   result := s;
 end;
 
+
+function get_ah_dump() : string;
+var  res : string;
+begin
+  update_mr();
+
+  if is_ui_visible(AH_RES0_TTL) then begin
+    res := get_text_value2(AH_RES0_TTL)+'|' +get_text_value(AH_RES0_COL1)+'|'+get_text_value(AH_RES0_COL2)+'|'+get_text_value(AH_RES0_COL3)+'|'+get_text_value(AH_RES0_COL4)+'|'+get_text_value(AH_RES0_COL5)+ #13#10;
+  end;
+  if is_ui_visible(AH_RES1_TTL) then begin
+    res := res + get_text_value2(AH_RES1_TTL)+'|' +get_text_value(AH_RES1_COL1)+'|'+get_text_value(AH_RES1_COL2)+'|'+get_text_value(AH_RES1_COL3)+'|'+get_text_value(AH_RES1_COL4)+'|'+get_text_value(AH_RES1_COL5)+ #13#10;
+  end;
+
+  if is_ui_visible(AH_RES2_TTL) then begin
+     res :=res +  get_text_value2(AH_RES2_TTL)+'|' +get_text_value(AH_RES2_COL1)+'|'+get_text_value(AH_RES2_COL2)+'|'+get_text_value(AH_RES2_COL3)+'|'+get_text_value(AH_RES2_COL4)+'|'+get_text_value(AH_RES2_COL5)+ #13#10;
+  end;
+
+  if is_ui_visible(AH_RES3_TTL) then begin
+    res := res + get_text_value2(AH_RES3_TTL)+'|' +get_text_value(AH_RES3_COL1)+'|'+get_text_value(AH_RES3_COL2)+'|'+get_text_value(AH_RES3_COL3)+'|'+get_text_value(AH_RES3_COL4)+'|'+get_text_value(AH_RES3_COL5)+ #13#10;
+  end;
+  if is_ui_visible(AH_RES4_TTL) then begin
+    res := res + get_text_value2(AH_RES4_TTL)+'|' +get_text_value(AH_RES4_COL1)+'|'+get_text_value(AH_RES4_COL2)+'|'+get_text_value(AH_RES4_COL3)+'|'+get_text_value(AH_RES4_COL4)+'|'+get_text_value(AH_RES4_COL5)+ #13#10;
+  end;
+  if is_ui_visible(AH_RES5_TTL) then begin
+    res := res + get_text_value2(AH_RES5_TTL)+'|' +get_text_value(AH_RES5_COL1)+'|'+get_text_value(AH_RES5_COL2)+'|'+get_text_value(AH_RES5_COL3)+'|'+get_text_value(AH_RES5_COL4)+'|'+get_text_value(AH_RES5_COL5)+ #13#10;
+  end;
+  if is_ui_visible(AH_RES6_TTL) then begin
+    res := res + get_text_value2(AH_RES6_TTL)+'|' +get_text_value(AH_RES6_COL1)+'|'+get_text_value(AH_RES6_COL2)+'|'+get_text_value(AH_RES6_COL3)+'|'+get_text_value(AH_RES6_COL4)+'|'+get_text_value(AH_RES6_COL5)+ #13#10;
+  end;
+  if is_ui_visible(AH_RES7_TTL) then begin
+    res := res + get_text_value2(AH_RES7_TTL)+'|' +get_text_value(AH_RES7_COL1)+'|'+get_text_value(AH_RES7_COL2)+'|'+get_text_value(AH_RES7_COL3)+'|'+get_text_value(AH_RES7_COL4)+'|'+get_text_value(AH_RES7_COL5)+ #13#10;
+  end;
+  if is_ui_visible(AH_RES8_TTL) then begin
+    res := res + get_text_value2(AH_RES8_TTL)+'|' +get_text_value(AH_RES8_COL1)+'|'+get_text_value(AH_RES8_COL2)+'|'+get_text_value(AH_RES8_COL3)+'|'+get_text_value(AH_RES8_COL4)+'|'+get_text_value(AH_RES8_COL5)+ #13#10;
+  end;
+  if is_ui_visible(AH_RES9_TTL) then begin
+    res := res + get_text_value2(AH_RES9_TTL)+'|' +get_text_value(AH_RES9_COL1)+'|'+get_text_value(AH_RES9_COL2)+'|'+get_text_value(AH_RES9_COL3)+'|'+get_text_value(AH_RES9_COL4)+'|'+get_text_value(AH_RES9_COL5)+ #13#10;
+  end;
+  if is_ui_visible(AH_RES10_TTL) then begin
+    res :=res +  get_text_value2(AH_RES10_TTL)+'|' +get_text_value(AH_RES10_COL1)+'|'+get_text_value(AH_RES10_COL2)+'|'+get_text_value(AH_RES10_COL3)+'|'+get_text_value(AH_RES10_COL4)+'|'+get_text_value(AH_RES10_COL5)+ #13#10;
+  end;
+
+  result := res;
+end;
 
 end.

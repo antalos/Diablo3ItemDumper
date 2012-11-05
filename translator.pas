@@ -257,7 +257,6 @@ s := srep(s, '«Архонт»', '«Archon»');
     s := srep(s, '% здоровья', '% life');
 
     s := srep(s, 'Пустое гнездо', 'Empty');
-    s := srep(s, ' м', ' yards');
     s := srep(s, ' на ', ' by ');
     s := srep(s, ' сек.', ' sec');
     s := srep(s, 'атак в sec', 'attacks per sec');
@@ -641,18 +640,6 @@ begin
     s3 := StringReplace(s3, 'Мощное двуручное оружие', 'Two-Handed Mighty Weapon', []);
     s3 := StringReplace(s3, 'Ручной арбалет', 'Hand Crossbow', [rfReplaceAll, rfIgnoreCase]);
 
-    s3 := StringReplace(s3, 'Посох', 'Staff', [rfReplaceAll, rfIgnoreCase]);
-    s3 := StringReplace(s3, 'Дайбо', 'Daibo', [rfReplaceAll, rfIgnoreCase]);
-    s3 := StringReplace(s3, 'Булава', 'Mace', [rfReplaceAll, rfIgnoreCase]);
-    s3 := StringReplace(s3, 'кинжал', 'Dagger', [rfReplaceAll, rfIgnoreCase]);
-    s3 := StringReplace(s3, 'Копье', 'Spear', [rfReplaceAll, rfIgnoreCase]);
-    s3 := StringReplace(s3, 'Меч', 'Sword', [rfReplaceAll, rfIgnoreCase]);
-    s3 := StringReplace(s3, 'топор', 'Axe', [rfReplaceAll, rfIgnoreCase]);
-
-    s3 := StringReplace(s3, 'Лук', 'Staff', [rfReplaceAll, rfIgnoreCase]);
-    s3 := StringReplace(s3, 'Арбалет', 'Crossbow', [rfReplaceAll, rfIgnoreCase]);
-    s3 := StringReplace(s3, 'Жезл', 'Wand', [rfReplaceAll, rfIgnoreCase]);
-
 
     s3 := StringReplace(s3, 'духовный камень', 'Spirit Stone', [rfReplaceAll, rfIgnoreCase]);
     s3 := StringReplace(s3, 'Шлем', 'Helm', [rfReplaceAll, rfIgnoreCase]);
@@ -666,22 +653,33 @@ begin
     s3 := StringReplace(s3, 'Материалы', 'Crafting Material', [rfReplaceAll, rfIgnoreCase]);
     s3 := StringReplace(s3, 'Эскиз кузнеца', 'Blacksmith Plan', [rfReplaceAll, rfIgnoreCase]);
     s3 := StringReplace(s3, 'Эскиз ювелира', 'Jeweler Design', [rfReplaceAll, rfIgnoreCase]);
+    s3 := StringReplace(s3, 'мощный пояс', 'Mighty Belt', [rfReplaceAll, rfIgnoreCase]);
+    s3 := StringReplace(s3, 'нагрудный доспех', 'Chest Armor', [rfReplaceAll, rfIgnoreCase]);
 
     s3 := StringReplace(s3, 'наплечники', 'Shoulders', [rfReplaceAll, rfIgnoreCase]);
     s3 := StringReplace(s3, 'амулет', 'Amulet', [rfReplaceAll, rfIgnoreCase]);
     s3 := StringReplace(s3, 'перчатки', 'Gloves', [rfReplaceAll, rfIgnoreCase]);
-    s3 := StringReplace(s3, 'нагрудный доспех', 'Chest Armor', [rfReplaceAll, rfIgnoreCase]);
     s3 := StringReplace(s3, 'Плащ', 'Cloak', [rfReplaceAll, rfIgnoreCase]);
     s3 := StringReplace(s3, 'наручи', 'Bracers', [rfReplaceAll, rfIgnoreCase]);
     s3 := StringReplace(s3, 'кольцо', 'Ring', [rfReplaceAll, rfIgnoreCase]);
     s3 := StringReplace(s3, 'ножная броня', 'Pants', [rfReplaceAll, rfIgnoreCase]);
     s3 := StringReplace(s3, 'обувь', 'Boots', [rfReplaceAll, rfIgnoreCase]);
     s3 := StringReplace(s3, 'Пояс', 'Belt', [rfReplaceAll, rfIgnoreCase]);
-    s3 := StringReplace(s3, 'мощный пояс', 'Mighty Belt', [rfReplaceAll, rfIgnoreCase]);
     s3 := StringReplace(s3, 'щит', 'Shield', [rfReplaceAll, rfIgnoreCase]);
     s3 := StringReplace(s3, 'сфера', 'Source', [rfReplaceAll, rfIgnoreCase]);
     s3 := StringReplace(s3, 'оберег', 'Mojo', [rfReplaceAll, rfIgnoreCase]);
     s3 := StringReplace(s3, 'колчан', 'Quiver', [rfReplaceAll, rfIgnoreCase]);
+
+    s3 := StringReplace(s3, 'Посох', 'Staff', [rfReplaceAll, rfIgnoreCase]);
+    s3 := StringReplace(s3, 'Дайбо', 'Daibo', [rfReplaceAll, rfIgnoreCase]);
+    s3 := StringReplace(s3, 'Булава', 'Mace', [rfReplaceAll, rfIgnoreCase]);
+    s3 := StringReplace(s3, 'кинжал', 'Dagger', [rfReplaceAll, rfIgnoreCase]);
+    s3 := StringReplace(s3, 'Копье', 'Spear', [rfReplaceAll, rfIgnoreCase]);
+    s3 := StringReplace(s3, 'Меч', 'Sword', [rfReplaceAll, rfIgnoreCase]);
+    s3 := StringReplace(s3, 'топор', 'Axe', [rfReplaceAll, rfIgnoreCase]);
+    s3 := StringReplace(s3, 'Лук', 'Staff', [rfReplaceAll, rfIgnoreCase]);
+    s3 := StringReplace(s3, 'Арбалет', 'Crossbow', [rfReplaceAll, rfIgnoreCase]);
+    s3 := StringReplace(s3, 'Жезл', 'Wand', [rfReplaceAll, rfIgnoreCase]);
     result := s3;
 end;
 

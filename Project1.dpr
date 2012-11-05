@@ -1,7 +1,6 @@
 program Project1;
 
-var
-  mr : CMem_reader;
+
 
 uses
   Forms,

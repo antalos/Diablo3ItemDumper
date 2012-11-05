@@ -310,7 +310,7 @@ begin
            if ReadProcessMemory(hProc,pProcBasicInfo.PebBaseAddress,@prb,sizeof(PEB),cb) then begin
             baseAddress := dword( pointer(prb.ImageBaseAddress) );
             mem_baseaddr := baseAddress;
-//            log('d3 BaseAddr: '+inttohex(baseAddress, 8));
+            //log('d3 BaseAddr: '+inttohex(baseAddress, 8));
            end;
          end;
        except

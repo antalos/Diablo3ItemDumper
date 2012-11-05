@@ -24,7 +24,7 @@ function read(addr :dword) : dword;
 function getfloat(s:string) : double	;
 
 implementation
-uses unit1;
+uses unit1, d3const;
 
 function sfloat(i : double) : string;
 begin

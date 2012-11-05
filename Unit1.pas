@@ -24,6 +24,8 @@ type
     hkDumpChar: THotKey;
     Label2: TLabel;
     Label3: TLabel;
+    Label4: TLabel;
+    hkDumpAH: THotKey;
     procedure FormCreate(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -54,7 +56,7 @@ var
 
 const
 
-  CUR_VERSION = '104f';
+  CUR_VERSION = '105c';
 
 procedure log(s: string);
 
@@ -64,7 +66,7 @@ implementation
 
 procedure TForm1.FormCreate(Sender: TObject);
 var
-  s, ibind, cbind: string;
+  s, ibind, cbind, ahbind: string;
   f : TIniFile;
   Shortcut: TShortCut;
   Flags: Cardinal;
@@ -90,7 +92,7 @@ begin
   tnid.uFlags := NIF_MESSAGE or NIF_ICON or NIF_TIP;
   tnid.uCallbackMessage := WM_NOTIFYICON;
   tnid.HICON := HMainIcon;
-  tnid.szTip := 'POP3 Server';
+  tnid.szTip := 'D3 iDumper';
 
   Shell_NotifyIcon(NIM_ADD, @tnid);
 
@@ -100,10 +102,12 @@ begin
   f := TIniFile.Create(ExtractFilePath(Application.ExeName) + '\app.ini');
   ibind  := f.ReadString('common', 'itemDumpKey', 'f11');
   cbind := f.ReadString('common', 'charDumpKey', 'Ctrl+f11');
+  ahbind := f.ReadString('common', 'ahDumpKey', 'Alt+f11');
   f.Free;
 
   hkDumpItem.HotKey := TextToShortCut( ibind );
   hkDumpChar.HotKey := TextToShortCut( cbind );
+  hkDumpAh.HotKey := TextToShortCut( ahbind );
 
   ShortCut := TextToShortCut(ibind);
   Flags := 0;
@@ -125,6 +129,15 @@ begin
   if ssAlt in Shift then  Flags := Flags or MOD_ALT;
   if not RegisterHotkey(Handle, 2, Flags, Key) then log('[ERROR] Unable to assign '+cbind+' as hotkey.');
 
+  ShortCut := TextToShortCut(ahbind);
+  Flags := 0;
+  Key   := 0;
+  Shift  := [];
+  ShortCutToKey(Shortcut, Key, Shift);
+  if ssCtrl in Shift then Flags := Flags or MOD_CONTROL;
+  if ssShift in Shift then Flags := Flags or MOD_SHIFT;
+  if ssAlt in Shift then  Flags := Flags or MOD_ALT;
+  if not RegisterHotkey(Handle, 3, Flags, Key) then log('[ERROR] Unable to assign '+ahbind+' as hotkey.');
 
 end;
 
@@ -135,6 +148,7 @@ begin
   f := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'app.ini');
   f.writeString('common', 'itemDumpKey', ShortCutToText( hkDumpItem.HotKey ));
   f.writeString('common', 'charDumpKey', ShortCutToText( hkDumpChar.HotKey ));
+  f.writeString('common', 'ahDumpKey', ShortCutToText( hkDumpAH.HotKey ));
   f.Free;
 
   log('!!! WARN !!!! New hotkeys will work after program restart')
@@ -189,8 +203,7 @@ begin
   if msg.hotkey = 1 then
   begin
     // Button1Click(self);
-
-    // dump_ui();    exit;
+//   dump_ui();    exit;
     s := get_info_from_itempopup();
     log(s);
     log('-----------------------');
@@ -207,6 +220,16 @@ begin
     Clipboard.AsText := s;
     exit;
   end;
+
+  if msg.hotkey = 3 then
+  begin
+    s := get_ah_dump();
+    log(s);
+    log('-----------------------');
+    Clipboard.AsText := s;
+    exit;
+  end;
+
 
 end;
 

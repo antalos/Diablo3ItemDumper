@@ -39,6 +39,13 @@ object Form1: TForm1
     Height = 13
     Caption = 'Dump Char key'
   end
+  object Label4: TLabel
+    Left = 172
+    Top = 112
+    Width = 62
+    Height = 13
+    Caption = 'Dump AH res'
+  end
   object Memo1: TMemo
     Left = 0
     Top = 160
@@ -79,7 +86,7 @@ object Form1: TForm1
   end
   object Button2: TButton
     Left = 159
-    Top = 107
+    Top = 130
     Width = 75
     Height = 25
     Caption = 'Save keys'
@@ -93,6 +100,14 @@ object Form1: TForm1
     Height = 19
     HotKey = 32833
     TabOrder = 5
+  end
+  object hkDumpAH: THotKey
+    Left = 242
+    Top = 112
+    Width = 70
+    Height = 19
+    HotKey = 32833
+    TabOrder = 6
   end
   object ApplicationEvents1: TApplicationEvents
     OnMinimize = ApplicationEvents1Minimize
