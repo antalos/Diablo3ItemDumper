@@ -6,7 +6,7 @@ var
   mr : CMem_reader;
 
 const
-    offObjectMngr = $186FA3C;//$1543B9C;
+    offObjectMngr = $1873414;//$186FA3C;//$1543B9C;
     offObjectMngr_uilist = $93c;
     offUIItemProperties = $210;
 
